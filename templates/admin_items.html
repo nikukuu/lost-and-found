@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/admin_dash.css">
+    <link rel="stylesheet" href="/static/css/admin_items.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Items</title>
+
+</head>
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin.admin_dashboard') }}"><h2>Admin Dashboard</h2></a>
+        <a href="{{ url_for('admin.admin_post') }}">Post an Item</a>
+        <a href="{{ url_for('admin.admin_items') }}">Items</a>
+        <a href="{{ url_for('admin.admin_claims') }}">Claimed Item</a>
+        <a href="{{ url_for('admin.contact_us')}}">Claimer Info</a>
+        <hr>
+        <a href="{{ url_for('admin.admin_account') }}">Account Info</a>
+        <a href="{{ url_for('admin.admin_logs') }}">Activity Logs</a>
+        <a href="{{ url_for('admin.admin_login') }}">Logout</a>
+    </div>
+
+    <div class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    
+        <h1>Items List</h1>
+
+        <form method="GET" action="{{ url_for('admin.admin_items') }}">
+            <label for="status">Filter by Status:</label>
+            <select name="status" id="status" onchange="this.form.submit()">
+                <option value="">All</option>
+                <option value="published" {{ 'selected' if selected_status == 'published' else '' }}>Published</option>
+                <option value="claimed" {{ 'selected' if selected_status == 'claimed' else '' }}>Claimed</option>
+            </select>
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Date Created/Found</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[2] }}</td>
+                <td>{{ item[3] }}</td>
+
+                <td>
+                    <span class="status 
+                        {% if item[4] == 'Published' %}Published
+                        {% elif item[4] == 'Claimed' %}Claimed
+                        {% endif %}">
+                        {{ item[4] | capitalize }}
+                    </span>
+                </td>
+
+
+                <td>
+                    <div class="dropdown">
+                        <button>Action</button>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('admin.edit_item', item_id=item[0]) }}">Edit</a>
+                            <form action="{{ url_for('admin.delete_item', item_id=item[0]) }}" method="POST" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

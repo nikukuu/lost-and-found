@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/css/admin_dash.css">
+    <link rel="stylesheet" href="/static/css/contact_us.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claimer Information</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin.admin_dashboard') }}">
+            <h2>Admin Dashboard</h2>
+        </a>
+        <a href="{{ url_for('admin.admin_post') }}">Post an Item</a>
+        <a href="{{ url_for('admin.admin_items') }}">Items</a>
+        <a href="{{ url_for('admin.admin_claims') }}">Claimed Item</a>
+        <a href="{{ url_for('admin.contact_us')}}">Claimer Info</a>
+        <hr>
+        <a href="{{ url_for('admin.admin_account') }}">Account Info</a>
+        <a href="{{ url_for('admin.admin_logs') }}">Activity Logs</a>
+        <a href="{{ url_for('admin.admin_login') }}">Logout</a>
+    </div>
+
+    <div class="image-section">
+
+    </div>
+
+    <div class="container">
+        <h1>Claimer Information</h1>
+
+        {% if success_message %}
+        <p style="color: green; font-weight: bold;">{{ success_message }}</p>
+        {% endif %}
+
+        <form action="{{ url_for('admin.contact_us') }}" method="POST">
+            <label for="item_id">Item ID:</label>
+            <input type="number" id="item_id" name="item_id" required min="1">
+
+            <label for="claimer_name">Full name:</label>
+            <input type="text" id="claimer_name" name="claimer_name" required maxlength="100">
+
+            <label for="contact_info">Contact Info:</label>
+            <input type="text" id="contact_info" name="contact_info" required maxlength="150">
+
+            <label for="message">Additional Information:</label>
+            <textarea id="message" name="message" rows="4" maxlength="500"
+                placeholder="Any additional details..."></textarea>
+
+            <button type="submit">Submit Claim</button>
+        </form>
+    </div>
+</body>
+
+</html>

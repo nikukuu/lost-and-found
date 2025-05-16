@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/home.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISU Lost and Found</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="{{ url_for('items.items') }}">Lost and Found</a></li>
+                <li><a href="{{ url_for('about_us')}}">About Us</a></li>
+            </ul>
+            <a href="{{ url_for('admin.admin_login')}}" class="login-button">Admin</a>
+        </nav>
+    </header>
+
+    <div class="image-section">
+        <div class="image-container">
+            <img src="/static/images/isu.jpg" alt="Lost and Found Image">
+            <div class="overlay">
+                <h1>ISU Cauayan - Lost and Found</h1>
+                <hr>
+                <a href="{{ url_for('items.items') }}" class="find-item-button">Find Item</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/css/admin_dash.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* Centering the month text */
+        #posted-items-month,
+        #claimed-items-month {
+            text-align: center;
+            margin: 0;
+            /* Remove default margins for better alignment */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin.admin_dashboard') }}">
+            <h2>Admin Dashboard</h2>
+        </a>
+        <a href="{{ url_for('admin.admin_post') }}">Post an Item</a>
+        <a href="{{ url_for('admin.admin_items') }}">Items</a>
+        <a href="{{ url_for('admin.admin_claims') }}">Claimed Item</a>
+        <a href="{{ url_for('admin.contact_us')}}">Claimer Info</a>
+        <hr>
+        <a href="{{ url_for('admin.admin_account') }}">Account Info</a>
+        <a href="{{ url_for('admin.admin_logs') }}">Activity Logs</a>
+        <a href="{{ url_for('admin.admin_login') }}">Logout</a>
+    </div>
+
+    <div class="content">
+        <h1>Admin Dashboard</h1>
+
+        <div class="stats">
+            <div class="stat">
+                <h3>Published Items</h3>
+                <p>{{ published_count }}</p>
+            </div>
+            <div class="stat">
+                <h3>Claimed Items</h3>
+                <p>{{ claimed_count }}</p>
+            </div>
+        </div>
+        <hr>
+
+        <div class="summary-cards">
+            <!-- Posted Items Summary -->
+            <div class="card">
+                <button class="btn-blue" onclick="printTable('posted-items')">Print</button>
+                <button class="btn-green" onclick="exportTableToCSV('posted-items')">Export to CSV</button>
+                <table id="posted-items">
+                    <thead>
+                        <tr>
+                            <th colspan="4">
+                            <p style="text-align: center; margin: 0;">Isabela State University - Cauayan Campus</p>
+                                <h3>Posted Items Summary</h3>
+                                <p id="posted-items-month"></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Date Found</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in posted_items %}
+                        <tr>
+                            <td>{{ item[0] }}</td>
+                            <td>{{ item[1] }}</td>
+                            <td>{{ item[2] }}</td>
+                            <td>{{ item[3] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Claimed Items Summary -->
+            <div class="card">
+                <button class="btn-blue" onclick="printTable('claimed-items')">Print</button>
+                <button class="btn-green" onclick="exportTableToCSV('claimed-items')">Export to CSV</button>
+                <table id="claimed-items">
+                    <thead>
+                        <tr>
+                            <th colspan="6">
+                            <p style="text-align: center; margin: 0;">Isabela State University - Cauayan Campus</p>
+                                <h3>Claimer Details and Claimed Item</h3>
+                                <p id="claimed-items-month"></p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Claim ID</th>
+                            <th>Item Name</th>
+                            <th>Claimer's Name</th>
+                            <th>Status</th>
+                            <th>Date Claimed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for claim in claims %}
+                        <tr>
+                            <td>{{ claim[0] }}</td>
+                            <td>{{ claim[1] }}</td>
+                            <td>{{ claim[2] }}</td>
+                            <td>{{ claim[4] }}</td>
+                            <td>{{ claim[6] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <script>
+                // Function to set the current month below the titles
+                function setCurrentMonth() {
+                    const now = new Date();
+                    const options = { year: 'numeric', month: 'long' };
+                    const currentMonth = now.toLocaleDateString(undefined, options);
+
+                    // Set current month in the respective tables
+                    document.getElementById('posted-items-month').textContent = ` ${currentMonth}`;
+                    document.getElementById('claimed-items-month').textContent = ` ${currentMonth}`;
+                }
+
+                // Function to print the table
+                function printTable(tableId) {
+                    var table = document.getElementById(tableId);
+                    var newWindow = window.open('', '', 'height=600, width=800');
+                    newWindow.document.write('<html><head><title>Print</title></head><body>');
+                    newWindow.document.write(table.outerHTML);
+                    newWindow.document.write('</body></html>');
+                    newWindow.document.close();
+                    newWindow.print();
+                }
+
+                // Function to export table to CSV
+                function exportTableToCSV(tableId) {
+                    var table = document.getElementById(tableId);
+                    var rows = table.querySelectorAll('tr');
+                    var csvContent = "";
+
+                    rows.forEach(function (row) {
+                        var cells = row.querySelectorAll('th, td');
+                        var rowData = Array.from(cells).map(function (cell) {
+                            return '"' + cell.textContent.trim().replace(/"/g, '""') + '"';
+                        }).join(',');
+                        csvContent += rowData + '\n';
+                    });
+
+                    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    var link = document.createElement('a');
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', 'Lost_and_Found_data.csv');
+                    link.style.visibility = 'hidden';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+
+                // Initialize the current month
+                setCurrentMonth();
+            </script>
+</body>
+
+</html>

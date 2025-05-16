@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="/static/css/about_us.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="{{ url_for('items.items') }}">Lost and Found</a></li>
+                <li><a href="{{ url_for('about_us')}}">About Us</a></li>
+            </ul>
+            <a href="{{ url_for('admin.admin_login')}}" class="login-button">Admin</a>
+        </nav>
+    </header>
+
+    <div class="image-section">
+        <h1>About us </h1>
+        
+        <p>
+            We are third-year Bachelor of Science in Information Technology (BSIT) students, 
+            specializing in Web and Mobile Application Development. Our passion for innovation and problem-solving 
+            drives us to create efficient and user-friendly applications that make a difference.
+        </p>
+
+        <div class="cards">
+            <div class="card container">
+                <img src="/static/images/CMiggy.png" alt="">
+
+                <h3>Patrick Miguel Blas</h3>
+                <h5>Age: 22</h5>
+                <h5>Daramuangan Sur, San Mateo, Isabela</h5>
+                <a href="mailto:blasmiggy@gmail.com"><h5>blasmiggy@gmail.com</h5></a>
+            </div>
+            
+            <div class="card container">
+                <img src="/static/images/nicole.png" alt="">
+
+                <h3>Nicole A. Mahilum</h3>
+                <h5>Age: 20</h5>
+                <h5>Loria, Angadanan, Isabela</h5>
+                <a href="mailto:nicole8mahilum@gmail.com"><h5>nicole8mahilum@gmail.com</h5></a>
+            </div>
+
+            <div class="card container">
+                <img src="/static/images/mharian.png" alt="">
+
+                <h3>Mharian Angel R. Villamor</h3>
+                <h5>Age: 21</h5>
+                <h5>Sillawit, Cauayan City, Isabela</h5>
+                <a href="mailto:mharianangelv@gmail.com"><h5>mharianangelv@gmail.com</h5></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

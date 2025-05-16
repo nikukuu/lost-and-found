@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/admin_dash.css">
+    <link rel="stylesheet" href="/static/css/admin_account.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin.admin_dashboard') }}"><h2>Admin Dashboard</h2></a>
+        <a href="{{ url_for('admin.admin_post') }}">Post an Item</a>
+        <a href="{{ url_for('admin.admin_items') }}">Items</a>
+        <a href="{{ url_for('admin.admin_claims') }}">Claimed</a>
+        <a href="{{ url_for('admin.contact_us')}}">Claimer Info</a>
+        <hr>
+        <a href="{{ url_for('admin.admin_account') }}">Account Info</a>
+        <a href="{{ url_for('admin.admin_logs') }}">Activity Logs</a>
+        <a href="{{ url_for('admin.admin_login') }}">Logout</a>
+    </div>
+
+    <div class="content-container">
+        <div class="form-card">
+            <h2>Update Admin Account</h2>
+
+            {% if success_message %}
+            <div class="alert alert-success">{{ success_message }}</div>
+            {% endif %}
+
+            <form action="{{ url_for('admin.admin_account') }}" method="POST">
+                <div class="form-group">
+                    <label for="username">New Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter new username" required maxlength="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">New Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter new password" required minlength="6">
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

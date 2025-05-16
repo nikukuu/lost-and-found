@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/css/items.css">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Items</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="{{ url_for('items.items') }}">Lost and Found</a></li>
+                <li><a href="{{ url_for('about_us')}}">About Us</a></li>
+            </ul>
+            <a href="{{ url_for('admin.admin_login')}}" class="login-button">Admin</a>
+        </nav>
+    </header>
+
+    <p class="par">All items must be claimed at Guidance Office of ISU-Cauayan Campus.</p>
+    <div class="image-section">
+        <h1>Lost and Found Items</h1>
+    </div>
+
+    <div class="search-bar">
+        <form action="javascript:void(0);"> <!-- Prevent default form submission -->
+            <input type="text" id="search-query" placeholder="Search for items...">
+        </form>
+    </div>
+
+    <div class="container" id="items-container">
+        <!-- Items will be dynamically loaded here -->
+        {% if items %}
+        {% for item in items %}
+        <div class="item-card">
+            {% if item['image_path'] %}
+            <img src="{{ url_for('static', filename='uploads/' + item['image_path']) }}"
+                alt="Image of {{ item['item_name'] }}">
+            {% endif %}
+            <h3>{{ item['item_name'] }}</h3>
+            <p><strong>Item ID:</strong> {{ item['id'] }}</p>
+            <p><strong>Description:</strong> {{ item['description'] }}</p>
+            <p><strong>Location Found:</strong> {{ item['location'] }}</p>
+            <p><strong>Date Found:</strong> {{ item['date_found'] }}</p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="no-results">
+            <p>No items found.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('search-query').addEventListener('input', function () {
+            const query = this.value; // Get the search query
+            fetch(`/items/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('items-container');
+                    container.innerHTML = ''; // Clear current items
+
+                    if (data.items.length > 0) {
+                        data.items.forEach(item => {
+                            const itemCard = `
+                                <div class="item-card">
+                                    ${item.image_path ? `<img src="/static/uploads/${item.image_path}" alt="Image of ${item.item_name}">` : ''}
+                                    <h3>${item.item_name}</h3>
+                                    <p><strong>Item ID:</strong> ${item.id}</p>
+                                    <p><strong>Description:</strong> ${item.description}</p>
+                                    <p><strong>Location Found:</strong> ${item.location}</p>
+                                    <p><strong>Date Found:</strong> ${item.date_found}</p>
+                                </div>
+                            `;
+                            container.innerHTML += itemCard;
+                        });
+                    } else {
+                        container.innerHTML = '<div class="no-results"><p>No items found.</p></div>';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>

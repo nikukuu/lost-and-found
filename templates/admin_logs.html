@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/static/css/admin_dash.css">
+    <link rel="stylesheet" href="/static/css/admin_items.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Logs</title>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin.admin_dashboard') }}">
+            <h2>Admin Dashboard</h2>
+        </a>
+        <a href="{{ url_for('admin.admin_post') }}">Post an Item</a>
+        <a href="{{ url_for('admin.admin_items') }}">Items</a>
+        <a href="{{ url_for('admin.admin_claims') }}">Claimed Item</a>
+        <a href="{{ url_for('admin.contact_us') }}">Claimer Info</a>
+        <hr>
+        <a href="{{ url_for('admin.admin_account') }}">Account Info</a>
+        <a href="{{ url_for('admin.admin_logs') }}">Activity Logs</a>
+        <a href="{{ url_for('admin.admin_login') }}">Logout</a>
+    </div>
+
+    <div class="content">
+        <h1>Activity Logs</h1>
+
+        <table>
+            <tr>
+                <th>Admin</th>
+                <th>Action</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log[0] }}</td>
+                <td>{{ log[1] }}</td>
+                <td>{{ log[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+
+</html>

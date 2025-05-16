@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/css/admin_dash.css">
+    <link rel="stylesheet" href="/static/css/edit_item.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Item</title>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="{{ url_for('admin.admin_dashboard') }}"><h2>Admin Dashboard</h2></a>
+        <a href="{{ url_for('admin.admin_post') }}">Post an Item</a>
+        <a href="{{ url_for('admin.admin_items') }}">Items</a>   
+        <a href="{{ url_for('admin.admin_claims') }}">Claimed Item</a>
+        <a href="{{ url_for('admin.contact_us')}}">Claimer Info</a>
+        <hr>
+        <a href="{{ url_for('admin.admin_account') }}">Account Info</a>
+        <a href="{{ url_for('admin.admin_login') }}">Logout</a>
+    </div>
+
+    <div class="content-container">
+        <div class="content">
+            <h1>Edit Item</h1>
+            <form method="POST" class="edit-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="{{ item[1] }}" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required>{{ item[2] }}</textarea>
+                </div>
+    
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                        <select name="status"> 
+                            <option value="Published" {% if item.status=='Published' %}selected{% endif %}>Published</option>
+                            <option value="Claimed" {% if item.status=='Claimed' %}selected{% endif %}>Claimed</option>
+                        </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Item</button>
+                    <a href="{{ url_for('admin.admin_items') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
